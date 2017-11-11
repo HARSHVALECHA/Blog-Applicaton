@@ -1,0 +1,129 @@
+
+<head>
+
+<style>
+div.container {
+    width: 100%;
+    border: 1px solid gray;
+}
+
+header, footer {
+    padding: 1em;
+    color: blue;
+    background-color: grey;
+    clear: left;
+    text-align: center;
+}
+
+nav {
+    float: left;
+    max-width: 160px;
+    margin: 0;
+    padding: 0.5em;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+   
+nav ul a {
+    text-decoration: none;
+}
+
+article {
+    margin-left: 170px;
+    border-left: 1px solid gray;
+    padding: 1em;
+    overflow: hidden;
+}
+#subheader {
+    background:#ececec;
+    color:#444;
+	margin-top:10px;
+    padding:5px 100px;
+    overflow:auto;
+}
+
+</style>
+</head>
+<body> 
+<div class="container">
+<header>
+<div style="margin-right:800px;margin-top:0px;">
+<form action='/search_query/' method="post">
+{% csrf_token %}
+<input type="text" placeholder="Search By Title" name= "search_box" id ="search_box">
+<button type ="submit"> search</button>
+</form>
+</div>
+<div style="margin-left:500px;margin-top:-30px;">
+<a href='/blogs/'>All Blogs</a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+<a href='/updates/'>Add Blog</a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+<a href="{% url 'dashboard' request.user.id %}">Dashboard</a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+<a href="{% url 'profile'%}">Profile</a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+<a href='/logout/'>Logout</a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+
+{% if request.user.profile.pic %}
+
+<img src="{{request.user.profile.pic.url}}" align="middle" class="img-circle" width="20px" height="20px"/><br><br>
+{% endif %}
+</header>
+</div>
+
+<hr>
+{% for i in posts %}
+	 <h3>Posted by:&nbsp&nbsp&nbsp{{i.created_by.username}}</h3>
+	 <strong>Title</strong>:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{i.title}}   :   <small><b>{{i.date_created|timesince}}</b>  ago</small><br>
+	
+	 <strong>Content</strong>:&nbsp&nbsp&nbsp{{i.description|truncatechars:30}}<br><br>
+
+	 {% if i.pos %}
+     <img src= "{{i.pos.url}}" width="200px" height="200px"><br><br>
+    {% endif %}
+<form class="" action="{% url 'Comment' %}" method='post'>
+        {% csrf_token %}
+      <input type="hidden" name="feed" value="{{i.id}}">
+      <input type="text" class="form-control" style="width: 300px;" placeholder="comment" name="user_cmt">
+</form>
+<button onclick="window.location='{% url 'delete' i.id %}'">Delete Record</button>
+
+{% if cmt %}
+    
+  {% for k in cmt %}
+    <tr>
+      <td style="padding-left: 40px">
+      {% if k.info.id == i.id %}
+
+         {% if request.user.profile.pic %}
+          <img src = "{{ruest.user.profile.pic.url}}" class='img-circle' width="30px" height="30px"/>
+        {% endif %} 
+
+        {{k.user_cmt}} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+        &nbsp &nbsp <small> {{ k.date|timesince }}
+        </td>
+
+        <td style="width=450px; padding-left: 10px; padding-top: 0px">
+      {% endif %}
+    {% endfor %}
+{% endif %}
+<hr>
+{% endfor %}
+
+{% for i in ct %}
+     <h3>Posted by:{{i.created_by.username}}</h3>
+     Title:{{i.title}}   :   <small><b>{{i.date_created|timesince}}</b>  ago</small><br>
+    
+     Content:{{i.description|truncatechars:30}}<br><br>
+
+     {% if i.pos %}
+     <img src= "{{i.pos.url}}" width="200px" height="200px"><br>
+
+           <br>
+      {% endif %}
+<hr>
+ {% endfor %}
+<hr>
+
+
+</body>

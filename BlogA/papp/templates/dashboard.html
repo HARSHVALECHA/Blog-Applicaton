@@ -1,0 +1,22 @@
+<html>
+<head>
+</head>
+<body>
+<h3><strong>{{request.user.username}}</strong> Posts</h3>
+<hr>
+{% for i in k %}
+     Title:{{i.title}}   :   <small><b>{{i.date_created|timesince}}</b>  ago</small><br>
+    
+     Content:{{i.description|truncatechars:30}}<br><br>
+    
+     {% if i.pos %}
+     <img src= "{{i.pos.url}}" width="200px" height="200px"><br>
+
+
+           <br>
+
+     {% endif %}
+<hr>
+{% endfor %}
+</body>
+</html>

@@ -1,0 +1,19 @@
+<html>
+<head>
+	<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+</head>
+<body>
+
+       <div style="margin-left:35%;width:400px">
+		<h2>Register</h2>
+		<form action="{% url 'signup' %}" method='post' enctype="multipart/form-data">
+		 {% csrf_token %}
+		
+		{{form.as_p}}
+		
+		<button type='submit'>Register</button>
+		</form>
+     </div>
+ 
+</body>
+</html>
