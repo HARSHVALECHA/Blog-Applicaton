@@ -10,6 +10,7 @@ import re
 # Create your views here.
 def signup(request):
     """
+    this method is used to
     """
     if request.method=='POST':
         form=rform(request.POST)
