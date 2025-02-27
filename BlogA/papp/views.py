@@ -9,6 +9,8 @@ from .models import *
 import re
 # Create your views here.
 def signup(request):
+    """
+    """
     if request.method=='POST':
         form=rform(request.POST)
         if form.is_valid():
@@ -25,6 +27,8 @@ def signup(request):
 def login(request):
     return render(request,'login.html')
 def auth_view(request):
+    """
+    """
     username = request.POST['username']
     password = request.POST['password']
     user = auth.authenticate(username=username,password=password)
@@ -37,6 +41,8 @@ def auth_view(request):
     else:
         return HttpResponse('/invalid/')
 def info_f(request):
+    """
+    """
     if request.method=='POST':
         form =info_form(request.POST,request.FILES)
         print"1"
@@ -64,6 +70,8 @@ def info_f(request):
     return render(request,'info.html',{'form':form})
 
 def blogs(request):
+    """
+    """
     posts=info.objects.order_by('-date_created')
     #posts=info.objects.all()
     print posts
@@ -75,6 +83,8 @@ def logout(request):
     return HttpResponseRedirect('/')
 
 def dashboard(request,d):
+    """
+    """
     k=User.objects.get(id=d)
     k1=info.objects.filter(created_by=k)
 
@@ -82,6 +92,8 @@ def dashboard(request,d):
 
 
 def search(request):
+    """
+    """
     if request.method=='POST':
         squery=request.POST['search_box']
         if squery:
@@ -94,6 +106,8 @@ def search(request):
 
     return HttpResponseRedirect('/')
 def profile(request,d):
+    """
+    """
     use=User.objects.get(id=d)
     k1=info.objects.filter(created_by=use)
     print k1
@@ -101,6 +115,8 @@ def profile(request,d):
     #print f
     return render(request,"profile.html",{'use':k1})
 def Comment(request):
+    """
+    """
     if request.method =='POST':
         post_id = request.POST['feed']
         post_obj = info.objects.get(id=post_id)
